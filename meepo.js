@@ -44,6 +44,11 @@ Meepo.prototype.teleport = function() {
     this.stopChanneling();
 }
 
+Meepo.prototype.dagger = function(x, y) {
+    this.x = x - 20;
+    this.y = y - 20;
+}
+
 Meepo.prototype.stopChanneling = function() {
     this.poofTargetX = 0;
     this.poofTargetY = 0;
