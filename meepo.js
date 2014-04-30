@@ -3,10 +3,13 @@ Meepo = function() {
     this.y = 300 + randomOffset();
     this.color = "";
     this.stopChanneling();
+    this.channelSound = new Audio("sounds/poof_channel.wav");
+    this.poofAppearSound = new Audio("sounds/poof_appear.wav");
 }
 
 Meepo.prototype.poof = function(x, y) {
     if (!this.channeling) {
+        this.channelSound.play();
         this.poofTargetX = x;
         this.poofTargetY = y;
         this.channelTime = 0;
@@ -42,6 +45,7 @@ Meepo.prototype.teleport = function() {
     this.x = targetMeepo.x + randomOffset();
     this.y = targetMeepo.y + randomOffset();
     this.stopChanneling();
+    this.poofAppearSound.play();
 }
 
 Meepo.prototype.dagger = function(x, y) {
