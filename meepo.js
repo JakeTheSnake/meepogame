@@ -7,6 +7,11 @@ Meepo = function() {
     this.poofAppearSound = new Audio("sounds/poof_appear.wav");
 }
 
+Meepo.standardImage = new Image();
+Meepo.standardImage.src = "images/standard.png";
+Meepo.channelingImage = new Image();
+Meepo.channelingImage.src = "images/channeling.png";
+
 Meepo.prototype.poof = function(x, y) {
     if (!this.channeling) {
         this.channelSound.play();
@@ -27,17 +32,8 @@ Meepo.prototype.update = function(deltaTime) {
 }
 
 Meepo.prototype.draw = function() {
-    meepoContext.beginPath();
-    meepoContext.lineWidth = "20";
-    meepoContext.strokeStyle = this.channeling ? "red" : "green";
-    meepoContext.rect(this.x,this.y, 20, 20);
-    meepoContext.stroke();
-
-    meepoContext.beginPath();
-    meepoContext.lineWidth = "2";
-    meepoContext.strokeStyle = "black";
-    meepoContext.rect(this.x - 9, this.y - 9, 38,38);
-    meepoContext.stroke();
+    var img = this.channeling ? Meepo.channelingImage : Meepo.standardImage;
+    meepoContext.drawImage(img, this.x, this.y, 90, 90);
 }
 
 Meepo.prototype.teleport = function() {

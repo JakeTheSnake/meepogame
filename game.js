@@ -27,6 +27,8 @@ window.onload = function () {
     meepoCanvas.width = 800;
     meepoCanvas.height = 600;
     $("#canvas").append(meepoCanvas);
+    $("#canvas").css("width", "800");
+    $("#canvas").css("background-image", "url('images/jungle.png')");
 
     meepoContext.font = "30px Arial Black"
 
@@ -40,6 +42,7 @@ window.onload = function () {
     ];
 
     $(document).on("keydown", function(e) {
+        $(document).off("click");
         switch (e.which) {
             case hotkeys.one:
             case hotkeys.two:
@@ -105,7 +108,7 @@ findClosestMeepoTo = function(x, y) {
 };
 
 randomOffset = function() {
-    return Math.random()*70 - 35;
+    return Math.random()*140 - 70;
 };
 
 preparePoof = function() {
