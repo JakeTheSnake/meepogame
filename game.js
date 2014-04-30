@@ -28,6 +28,8 @@ window.onload = function () {
     meepoCanvas.height = 600;
     $("#canvas").append(meepoCanvas);
 
+    meepoContext.font = "30px Arial Black"
+
     meepos = [new Meepo(), new Meepo(), new Meepo(), new Meepo(), new Meepo()];
     groups = [
         [meepos[0]], 
@@ -52,13 +54,16 @@ window.onload = function () {
                 break;
             case hotkeys.tab:
                 selectedIndex = (selectedIndex + 1) % groups[selectedGroup].length;
+                e.preventDefault();
                 break;
             case hotkeys.space:
                 if (groups[selectedGroup][selectedIndex] === meepos[0]) {
                     prepareBlink();
                 }
+                e.preventDefault();
+                break;
         }
-        e.preventDefault();
+        
     });
 
     gameLoop();
@@ -75,9 +80,15 @@ gameLoop = function () {
     for (i = 0; i < meepos.length; i++) {
         meepos[i].draw(delta);
     }
+    drawGroups();
     requestAnimationFrame(gameLoop);
     then = now;
 };
+
+drawGroups = function() {
+    meepoContext.fillText((selectedGroup + 1) + ":", 5, 40);
+    meepoContext.fillText((selectedIndex + 1), 40, 40);
+}
 
 findClosestMeepoTo = function(x, y) {
     var closestMeepo = undefined;
