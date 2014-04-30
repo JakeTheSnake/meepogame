@@ -18,7 +18,7 @@ Meepo.prototype.update = function(deltaTime) {
     if (this.channeling) {
         this.channelTime += deltaTime;
     }
-    if (this.channelTime >= 1.5) {
+    if (this.channelTime >= 1500) {
         this.teleport();
     }
 }
@@ -56,14 +56,14 @@ Meepo.prototype.stopChanneling = function() {
     this.channelTime = 0;
 }
 
-Meepo.prototype.getDistanceToMeepo = function(meepo2)
+Meepo.prototype.getDistanceTo = function(x, y)
 {
     var xs = 0;
     var ys = 0;
 
-    xs = meepo2.x - this.x;
+    xs = x - this.x;
     xs = xs * xs;
-    ys = meepo2.y - this.y;
+    ys = y - this.y;
     ys = ys * ys;
 
     return Math.sqrt(xs + ys);

@@ -3,7 +3,7 @@ meepoCanvas = null;
 meepoContext = null;
 then = 0;
 selectedIndex = 0;
-selectedGroup = null;
+selectedGroup = 0;
 groups = [];
 
 
@@ -58,6 +58,7 @@ window.onload = function () {
                     prepareBlink();
                 }
         }
+        e.preventDefault();
     });
 
     gameLoop();
@@ -78,14 +79,15 @@ gameLoop = function () {
     then = now;
 };
 
-findClosestMeepoTo = function(meepo) {
+findClosestMeepoTo = function(x, y) {
     var closestMeepo = undefined;
     var lowestDistance = 1000;
     var i;
     for (i = 0; i < meepos.length; i++) {
-        var distance = meepos[i].getDistanceToMeepo(meepo);
+        var distance = meepos[i].getDistanceTo(x, y);
         if (distance < lowestDistance) {
             closestMeepo = meepos[i];
+            lowestDistance = distance;
         }
     }
     return closestMeepo;
