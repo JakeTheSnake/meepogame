@@ -1,10 +1,12 @@
-Meepo = function() {
+Meepo = function(number) {
     this.x = 400 + randomOffset();
     this.y = 300 + randomOffset();
-    this.color = "";
     this.stopChanneling();
     this.channelSound = new Audio("sounds/poof_channel.wav");
     this.poofAppearSound = new Audio("sounds/poof_appear.wav");
+    this.channelSound.volume = 0.5;
+    this.poofAppearSound.volume = 0.5;
+    this.number = number;
 }
 
 Meepo.standardImage = new Image();
@@ -15,8 +17,8 @@ Meepo.channelingImage.src = "images/channeling.png";
 Meepo.prototype.poof = function(x, y) {
     if (!this.channeling) {
         this.channelSound.play();
-        this.poofTargetX = x;
-        this.poofTargetY = y;
+        this.poofTargetX = x - 45;
+        this.poofTargetY = y - 45;
         this.channelTime = 0;
         this.channeling = true;
     }
@@ -45,8 +47,8 @@ Meepo.prototype.teleport = function() {
 }
 
 Meepo.prototype.dagger = function(x, y) {
-    this.x = x - 20;
-    this.y = y - 20;
+    this.x = x - 45;
+    this.y = y - 45;
 }
 
 Meepo.prototype.stopChanneling = function() {

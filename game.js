@@ -6,19 +6,6 @@ selectedIndex = 0;
 selectedGroup = 0;
 groups = [];
 
-
-hotkeys = {
-    tab: 9, 
-    one: 49, 
-    two: 50, 
-    three: 51, 
-    four: 52, 
-    five: 53, 
-    space: 32, 
-    w: 87,
-    q: 81
-}
-
 window.onload = function () {
     then = Date.now();
     meepoCanvas = document.createElement("canvas");
@@ -32,7 +19,7 @@ window.onload = function () {
 
     meepoContext.font = "30px Arial Black"
 
-    meepos = [new Meepo(), new Meepo(), new Meepo(), new Meepo(), new Meepo()];
+    meepos = [new Meepo(1), new Meepo(2), new Meepo(3), new Meepo(4), new Meepo(5)];
     groups = [
         [meepos[0]], 
         [meepos[1], meepos[2], meepos[3], meepos[4]], 
@@ -42,7 +29,8 @@ window.onload = function () {
     ];
 
     $(document).on("keydown", function(e) {
-        $(document).off("click");
+        $("#canvas").off("click");
+        var keyName = "";
         switch (e.which) {
             case hotkeys.one:
             case hotkeys.two:
@@ -51,22 +39,26 @@ window.onload = function () {
             case hotkeys.five:
                 selectedGroup = e.which - hotkeys.one;
                 selectedIndex = 0;
+                keyName = String.fromCharCode(e.which);
                 break;
             case hotkeys.w:
                 preparePoof();
+                 keyName = String.fromCharCode(e.which);
                 break;
             case hotkeys.tab:
                 selectedIndex = (selectedIndex + 1) % groups[selectedGroup].length;
+                 keyName = "TAB";
                 e.preventDefault();
                 break;
             case hotkeys.space:
+                keyName = "BLINK";
                 if (groups[selectedGroup][selectedIndex] === meepos[0]) {
                     prepareBlink();
                 }
                 e.preventDefault();
                 break;
         }
-        
+        $("#command-log").prepend(keyName + "<br/>");
     });
 
     gameLoop();
@@ -89,8 +81,8 @@ gameLoop = function () {
 };
 
 drawGroups = function() {
-    meepoContext.fillText((selectedGroup + 1) + ":", 5, 40);
-    meepoContext.fillText((selectedIndex + 1), 40, 40);
+    meepoContext.fillText((selectedGroup + 1) + ":", 720, 570);
+    meepoContext.fillText((selectedIndex + 1), 760, 570);
 }
 
 findClosestMeepoTo = function(x, y) {
@@ -111,16 +103,34 @@ randomOffset = function() {
     return Math.random()*140 - 70;
 };
 
-preparePoof = function() {
-    $(document).one("click", function(e) {
-        groups[selectedGroup][selectedIndex].poof(e.pageX, e.pageY);
-    });
+poofSelectedMeepo = function(e) {
+    groups[selectedGroup][selectedIndex].poof(e.pageX, e.pageY);
+    e.preventDefault();
+    $("#command-log").prepend("Poof meepo #" + groups[selectedGroup][selectedIndex].number + ".");
+}
+
+blinkSelectedMeepo = function(e) {
+    meepos[0].dagger(e.pageX, e.pageY);
+    e.preventDefault();
+    $("#command-log").prepend("Blink selected meepo.<br/>");
 }
 
 prepareBlink = function() {
-    $(document).one("click", function(e) {
-        meepos[0].dagger(e.pageX, e.pageY);
-    });
+    $("#canvas").one("click", blinkSelectedMeepo);
 }
 
+preparePoof = function() {
+    $("#canvas").one("click", poofSelectedMeepo);
+}
 
+hotkeys = {
+    tab: 9, 
+    one: 49, 
+    two: 50, 
+    three: 51, 
+    four: 52, 
+    five: 53, 
+    space: 32, 
+    w: 87,
+    q: 81
+}
